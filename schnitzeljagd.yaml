@@ -1,0 +1,300 @@
+# schatzsuche/schnitzeljagd zum geburtstag
+# (c) 2019 andreas loeffler <al@exitzero.de>
+# License: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+
+# FIXME/TODOs:
+# - umbenennen der scripts wegN nach z.B. OrtN oder checkpointN
+#   sonst kommt es zur verwechslung mit dem namen fuer die sound datei
+#   z.B. wegN.ogg beschreibt den wegverlauf zum weg(punkt)N (aka ortN/checkpointN)
+
+
+language: de
+
+welcome: willkommen
+
+product-id: 902
+
+#init: $cp:=0 $aufgabe:=0
+
+scripts:
+  reset:
+    - $cp:=0 $aufgabe:=0 $a1ok := 0 $a2ok := 0 $a3ok := 0 $a4ok := 0 
+  # edna das eichhoernchen auf der Startkarte, hilft immer ;)
+  edna:
+    - $cp == 0 ? $intro == 0 ? $intro:=1 P(intro) P(weg1)
+    - $cp == 0 ? $intro == 1 ? P(weg1)
+
+    - $cp == 1 ? P(weg2)
+
+    - $cp == 2 ? $a1ok == 1 ? P(weg3)
+    - $cp == 2 ? P(aufgabe1)
+
+    - $cp == 3 ? P(weg4)
+
+    - $cp == 4 ? $a2ok == 1 ? P(weg5)
+    - $cp == 4 ? P(aufgabe2)
+
+    - $cp == 5 ? P(weg6)
+    - $cp == 6 ? P(weg7)
+    - $cp == 7 ? P(weg8)
+    - $cp == 8 ? P(weg9)
+    - $cp == 9 ? P(weg10)
+    - $cp ==10 ? P(weg11)
+
+    - $cp ==11 ? $a3ok == 1 ? P(weg12)
+    - $cp ==11 ? P(aufgabe3)
+
+    - $cp ==12 ? P(weg13)
+    - $cp ==13 ? P(weg14)
+    - $cp ==14 ? P(weg15)
+    - $cp ==15 ? P(weg16)
+
+    - $cp ==16 ? $a4ok == 1 ? P(weg17)
+    - $cp ==16 ? P(aufgabe4)
+
+    - $cp ==17 ? P(weg18)
+    - $cp ==18 ? P(weg19)
+
+
+  # wegweiser
+  # Hinweis, (siehe todo) wegN ist einmal ein Ort zu dem man hinlaufen soll,
+  # zum anderen wird damit auch die audio datei (wegN.ogg), welche via P(wegN) abgespielt wird bezeichnet
+  # womit dann der wegverlauf zum wegN hin erklaert wird
+  # z.B. weg1 (OID) ist dann der erste wegpunkt der via weg1(beschreibung) angelaufen wird
+  # wegN beschreibt also den weg zum Ort wegN+1 ... naja first tip-toi program ;)
+
+  # bolzplatz/tor
+  weg1:
+    - $cp := 1 P(weg2)
+
+  # erwin's laufhuette, aufgabe1
+  weg2:
+    - $a1ok == 0 ? $cp := 2 J(aufgabe1)
+    - $a1ok == 1 ? $cp := 2 P(weg3)
+
+  # WEP15 (walderlebnispfad) spechtbaum (ohne specht)
+  weg3:
+    - $cp := 3 P(weg4)
+
+  # WEP14 alte burg, aufgabe2
+  weg4:
+    - $a2ok == 0 ? $cp := 4 J(aufgabe2)
+    - $a2ok == 1 ? $cp := 4 P(weg5)
+
+  # bank skihang
+  weg5:
+    - $cp := 5 P(weg6)
+
+  # WEP13 baeume raten
+  weg6:
+    - $cp := 6 P(weg7)
+
+  # bank kreuzung noerdl. trimmpfad
+  weg7:
+    - $cp := 7 P(weg8)
+
+  # waldfriedhof (danach WEP10 & 11)
+  weg8:
+    - $cp := 8 P(weg9)
+
+  # b464 bruecke
+  weg9:
+    - $cp := 9 P(weg10)
+
+  # kreuz, (spruch/psalm ?)
+  weg10:
+    - $cp := 10 P(weg11)
+
+  # waldspielplatz, aufgabe3
+  weg11:
+    - $a3ok == 0 ? $cp := 11 J(aufgabe3)
+    - $a3ok == 1 ? $cp := 11 P(weg12)
+
+  # waldspielplatz ende (schranke?)
+  weg12:
+    - $cp := 12 P(weg13)
+
+  # spielplatz / 9grad ost
+  weg13:
+    - $cp := 13 P(weg14)
+
+  # laterne (martinus) links asphalt
+  weg14:
+    - $cp := 14 P(weg15)
+
+  # anfang treppe
+  weg15:
+    - $cp := 15 P(weg16)
+
+  # holzbruecke, aufgabe4
+  weg16:
+    - $a4ok == 0 ? $cp := 16 J(aufgabe4)
+    - $a4ok == 1 ? $cp := 16 P(weg17)
+
+  # maurener weg ACHTUNG strasse...
+  weg17:
+    - $cp := 17 P(weg18)
+
+  # home / schatz suchen und zahlenschloss oeffnen
+  weg18:
+    - $cp := 18 P(weg19)
+
+
+  # aufgaben
+  aufgabe1:
+    - $aufgabe:=1 P(aufgabe1)
+
+  aufgabe2:
+    - $aufgabe:=2 P(aufgabe2)
+
+  aufgabe3:
+    - $aufgabe:=3 P(aufgabe3)
+
+  aufgabe4:
+    - $aufgabe:=4 P(aufgabe4)
+
+
+  # nummern block fuer antworten zu den aufgaben
+  eins:
+    - P(eins) $zahl:=1 J(check)
+
+  zwei:
+    - P(zwei) $zahl:=2 J(check)
+
+  drei:
+    - P(drei) $zahl:=3 J(check)
+
+  vier:
+    - P(vier) $zahl:=4 J(check)
+
+  fuenf:
+    - P(fuenf) $zahl:=5 J(check)
+
+  sechs:
+    - P(sechs) $zahl:=6 J(check)
+
+  sieben:
+    - P(sieben) $zahl:=7 J(check)
+
+  acht:
+    - P(acht) $zahl:=8 J(check)
+
+  neun:
+    - P(neun) $zahl:=9 J(check)
+
+  zero:
+    - P(zero) $zahl:=0 J(check)
+
+
+  # hier die loesungs zahlen: 3,2,5,9
+  # diese zahlen werden unten im vergleich $zahl == benutzt, kann man natuerlich aendern
+  # aufgabe1: z.B. alter eines kindes * X + Y - Z = ?
+  # aufgabe2: tbd. 
+  # aufgabe3: ...
+  # aufgabe4: ...
+  check:
+    #- $aufgabe == 0 ? P(keine_aufgabe)
+    - $aufgabe == 1 ? $zahl == 3 ? P(richtig1) $aufgabe:=0 $a1ok := 1
+    - $aufgabe == 1 ? P(falsch1,falsch2,falsch3)
+
+    - $aufgabe == 2 ? $zahl == 2 ? P(richtig2) $aufgabe:=0 $a2ok := 1
+    - $aufgabe == 2 ? P(falsch1,falsch2,falsch3)
+
+    - $aufgabe == 3 ? $zahl == 5 ? P(richtig3) $aufgabe:=0 $a3ok := 1
+    - $aufgabe == 3 ? P(falsch1,falsch2,falsch3)
+
+    - $aufgabe == 4 ? $zahl == 9 ? P(richtig4) $aufgabe:=0 $a4ok := 1
+    - $aufgabe == 4 ? P(falsch1,falsch2,falsch3)
+
+# wenn man mal die wegkarten gedruckt/gebastelt hat,
+# sollten sich diese codes besser nicht nochmal aendern
+scriptcodes:
+  weg1:  7033
+  weg2:  7041
+  weg3:  7043
+  weg4:  7044
+  weg5:  7045
+  weg6:  7046
+  weg7:  7047
+  weg8:  7048
+  weg9:  7049
+  weg10: 7040
+  weg11: 7032
+  weg12: 7031
+  weg13: 7034
+  weg14: 7035
+  weg15: 7036
+  weg16: 7037
+  weg17: 7038
+  weg18: 7039
+
+  zero:   7052
+  eins:   7017
+  zwei:   7053
+  drei:   7016
+  fuenf:  7018
+  sechs:  7028
+  sieben: 7029
+  vier:   7030
+  acht:   7013
+  neun:   7021
+
+  edna:   7014
+
+# test test 1 2 ...
+speak:
+  willkommen: "hallo herzlich willkommen, tippe auf das Eichhörnchen Edna um die Jagd zu beginnen"
+
+  eins:   "eins"
+  zwei:   "zwei"
+  drei:   "drei"
+  vier:   "vier"
+  fuenf:  "fünf"
+  sechs:  "sechs"
+  sieben: "sieben"
+  acht:   "acht"
+  neun:   "neun"
+  zero:   "null"
+
+  intro: "hallo das ist der anfang. ihr muesst den eichhörnchen folgen und den weg finden. aufgaben verraten den code"
+
+  richtig1: "Das ist richtig! Die erste  Zahl ist vier.   Tippe nochmal auf das Eichhörnchen oder auf Edna"
+  richtig2: "Das ist richtig! Die zweite Zahl ist null.   Tippe nochmal auf das Eichhörnchen oder auf Edna"
+  richtig3: "Das ist richtig! Die dritte Zahl ist sieben. Tippe nochmal auf das Eichhörnchen oder auf Edna"
+  richtig4: "Das ist richtig! Die letzte Zahl ist drei    Tippe nochmal auf das Eichhörnchen oder auf Edna"
+  
+  falsch1: "Das ist leider Falsch, versucht es noch einmal!"
+  falsch2: "Knapp daneben, rechnet nochmal nach!"
+  falsch3: "Nicht ganz, probiert es nochmal!"
+
+  #keine_aufgabe: ""
+  aufgabe1: "Aufgabe eins. alter von Klaus plus zwei minus sechs."
+  aufgabe2: "Aufgabe zwei. 5 minus 5?"
+  aufgabe3: "Aufgabe drei. Wieviel tage hat eine woche?"
+  aufgabe4: "Aufgabe vier. Rechnet ... 9 geteilt durch drei?"
+
+  weg1:   "Hier geht's lang: weg 1"
+  weg2:   "Hier geht's lang: weg 2"
+  weg3:   "Hier geht's lang: weg 3"
+  weg4:   "Hier geht's lang: weg 4"
+  weg5:   "Hier geht's lang: weg 5"
+  weg6:   "Hier geht's lang: weg 6"
+  weg7:   "Hier geht's lang: weg 7"
+  weg8:   "Hier geht's lang: weg 8"
+  weg9:   "Hier geht's lang: weg 9"
+  weg10:  "Hier geht's lang: weg 10"
+  weg11:  "Hier geht's lang: weg 11"
+  weg12:  "Hier geht's lang: weg zwölf"
+  weg13:  "Hier geht's lang: weg 13"
+  weg14:  "Hier geht's lang: weg 14"
+  weg15:  "Hier geht's lang: weg 15"
+  weg16:  "Hier geht's lang: weg 16"
+  weg17:  "Hier geht's lang: weg 17"
+  weg18:  "Hier geht's lang: weg 18"
+  weg19:  "Juhuu Ihr seid am Ziel. Jetzt nur noch den code eingeben!"
+
+
+# $ for n in {1..20}; do echo -e "  weg$n:\n    - P(weg$n)\n"; done 
+# --pixel-size 3,4... evtl. besser?
+# --dpi 600  works on epson laser
